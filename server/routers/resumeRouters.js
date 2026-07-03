@@ -2,9 +2,9 @@ import express from "express";
 import upload from "../middlewares/multer.js";
 import {
     uploadResume,
-    // getAllResumes,
-    // getResumeById,
-    // deleteResume
+    getAllResume,
+    getResumeById,
+    deleteResume
 } from "../controllers/resumeController.js";
 import  isAuthenticated  from "../middlewares/isAuthenticated.js";
 
@@ -19,24 +19,24 @@ router.post(
 );
 
 // Get all resumes of logged-in user
-// router.get(
-//     "/",
-//     isAuthenticated,
-//     getAllResumes
-// );
+router.get(
+    "/",
+    isAuthenticated,
+    getAllResume
+);
 
-// // Get a single resume
-// router.get(
-//     "/:id",
-//     isAuthenticated,
-//     getResumeById
-// );
+// Get a single resume
+router.get(
+    "/:id",
+    isAuthenticated,
+    getResumeById
+);
 
-// // Delete a resume
-// router.delete(
-//     "/:id",
-//     isAuthenticated,
-//     deleteResume
-// );
+// Delete a resume
+router.delete(
+    "/:id",
+    isAuthenticated,
+    deleteResume
+);
 
 export default router;

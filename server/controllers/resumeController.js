@@ -59,3 +59,43 @@ export const uploadResume = async (req, res) => {
     return res.status(500).json({ message: "Failed to upload resume", error: error.message });
   }
 };
+
+
+
+export const getAllResume = async (req,res)=>{
+  try {
+    const resumes = await Resume.find({userId: req.user.id});
+    if(!resumes){
+        return res.status(404).json({ message: "No resumes found" });
+    }
+    return res.status(200).json({ resumes });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get resumes", error: error.message });
+  }
+}
+
+
+export const getResumeById = async (req,res)=>{
+  try {
+    const resume = await Resume.findById(req.params.id);
+    if(!resume){
+        return res.status(404).json({ message: "No resume found" });
+    }
+    return res.status(200).json({ resume });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get resume", error: error.message });
+  }
+}
+
+
+export const deleteResume = async (req,res)=>{
+  try {
+    const resume = await Resume.findByIdAndDelete(req.params.id);
+    if(!resume){
+        return res.status(404).json({ message: "No resume found" });
+    }
+    return res.status(200).json({ message: "Resume deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete resume", error: error.message });
+  }
+}
