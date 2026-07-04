@@ -21,9 +21,11 @@ database();
 
 import userRoutes from "./routers/userRoutes.js";
 import resumeRoutes from "./routers/resumeRouters.js";
+import jobDescRoutes from "./routers/jobDescRoutes.js";
 
 app.use("/api/users", userRoutes);
 app.use("/api/resumes", resumeRoutes);
+app.use("/api/jobDesc", jobDescRoutes);
 
 
 // app.get("/", isAuthenticated, (req, res) => {
