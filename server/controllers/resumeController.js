@@ -2,6 +2,8 @@ import User from "../models/userSchema.js";
 import Resume from "../models/resumeSchema.js";
 import cloudinary from "../services/cloudinary.js";
 import streamifier from "streamifier";
+import extractResumeText from "../utils/extractResumeText.js";
+import { parseResume } from "../services/aiServices.js";
 
 export const uploadResume = async (req, res) => {
   try {
@@ -12,8 +14,12 @@ export const uploadResume = async (req, res) => {
       });
     }
 
-//     console.log(process.env.CLOUDINARY_API_KEY);
-// console.log(cloudinary.config());
+    const rawText = await extractResumeText(req.file);
+    const parsedData = await parseResume(rawText);
+
+
+    console.log(parsedData);
+    
 
   const result = await new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -44,9 +50,10 @@ export const uploadResume = async (req, res) => {
             publicId: result.public_id,
             fileType: req.file.mimetype.includes("pdf") ? "pdf" : "docx",
             fileSize: req.file.size,
-            rawText: "",
-            parsedData: {}
+            rawText,
+            parsedData
         });
+
 
         return res.status(201).json({
             success: true,
