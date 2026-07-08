@@ -7,7 +7,7 @@ import { parseResume } from "../services/aiServices.js";
 
 export const uploadResume = async (req, res) => {
   try {
-    if (!req.file) {
+    if (!req.file || !req.file.buffer) {
       return res.status(400).json({
         success: false,
         message: "No file uploaded",
@@ -63,7 +63,7 @@ export const uploadResume = async (req, res) => {
 
 
   } catch (error) {
-    return res.status(500).json({ message: "Failed to upload resume", error: error.message });
+    return res.status(500).json({ message: "Failed to upload resume", error: error.message, success: false });
   }
 };
 
@@ -72,12 +72,12 @@ export const uploadResume = async (req, res) => {
 export const getAllResume = async (req,res)=>{
   try {
     const resumes = await Resume.find({userId: req.user.id});
-    if(!resumes){
-        return res.status(404).json({ message: "No resumes found" });
+    if(!resumes ){
+        return res.status(404).json({ message: "No resumes found", success: false });
     }
-    return res.status(200).json({ resumes });
+    return res.status(200).json({ resumes, success: true });
   } catch (error) {
-    res.status(500).json({ message: "Failed to get resumes", error: error.message });
+    res.status(500).json({ message: "Failed to get resumes", error: error.message, success: false });
   }
 }
 
@@ -85,12 +85,12 @@ export const getAllResume = async (req,res)=>{
 export const getResumeById = async (req,res)=>{
   try {
     const resume = await Resume.findById(req.params.id);
-    if(!resume){
-        return res.status(404).json({ message: "No resume found" });
+    if(!resume || resume.length === 0){
+        return res.status(404).json({ message: "No resume found", success: false });
     }
-    return res.status(200).json({ resume });
+    return res.status(200).json({ resume, success: true });
   } catch (error) {
-    res.status(500).json({ message: "Failed to get resume", error: error.message });
+    res.status(500).json({ message: "Failed to get resume", error: error.message, success: false });
   }
 }
 
@@ -98,11 +98,11 @@ export const getResumeById = async (req,res)=>{
 export const deleteResume = async (req,res)=>{
   try {
     const resume = await Resume.findByIdAndDelete(req.params.id);
-    if(!resume){
-        return res.status(404).json({ message: "No resume found" });
+    if(!resume || resume.length === 0){
+        return res.status(404).json({ message: "No resume found", success: false });
     }
-    return res.status(200).json({ message: "Resume deleted successfully" });
+    return res.status(200).json({ message: "Resume deleted successfully", success: true });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete resume", error: error.message });
+    res.status(500).json({ message: "Failed to delete resume", error: error.message, success: false });
   }
 }

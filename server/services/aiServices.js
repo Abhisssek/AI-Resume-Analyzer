@@ -1,63 +1,73 @@
-import Groq from "groq-sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import resumeParserPrompt from "../prompts/resumeParserPrompt.js";
 import atsAnalysisPrompt from "../prompts/atsAnalysisPrompt.js";
+import jobParserPrompt from "../prompts/jobParserPrompt.js";
 
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
+const genAI = new GoogleGenerativeAI(
+    process.env.GEMINI_API_KEY
+);
+
+const model = genAI.getGenerativeModel({
+    model: "gemini-2.5-flash"
 });
 
 export const parseResume = async (rawText) => {
-
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
-
-        messages: [
-            {
-                role: "system",
-                content: "You are an expert ATS Resume Parser."
-            },
-            {
-                role: "user",
-                content: resumeParserPrompt(rawText)
-            }
-        ],
-
-        temperature: 0,
-
-        response_format: {
-            type: "json_object"
-        }
-    });
-
-    return JSON.parse(completion.choices[0].message.content);
-};
-
-
-export const analyzeResume = async (parsedResume, jobDescription) => {
     try {
 
-        const completion = await groq.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
+        const result = await model.generateContent(
+            resumeParserPrompt(rawText)
+        );
 
-            messages: [
-                {
-                    role: "system",
-                    content: "You are an expert ATS analyzer and technical recruiter."
-                },
-                {
-                    role: "user",
-                    content: atsAnalysisPrompt(parsedResume, jobDescription)
-                }
-            ],
+        const response = await result.response;
 
-            temperature: 0,
+        const text = response.text();
 
-            response_format: {
-                type: "json_object"
-            }
-        });
+        return JSON.parse(text);
 
-        return JSON.parse(completion.choices[0].message.content);
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const analyzeResume = async (
+    parsedResume,
+    jobDescription
+) => {
+    try {
+
+        const result = await model.generateContent(
+            atsAnalysisPrompt(
+                parsedResume,
+                jobDescription
+            )
+        );
+
+        const response = await result.response;
+
+        const text = response.text();
+
+        return JSON.parse(text);
+
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const parseJobDescription = async (
+    jobDescription
+) => {
+    try {
+
+        const result = await model.generateContent(
+            jobParserPrompt(jobDescription)
+        );
+
+        const response = await result.response;
+
+        const text = response.text();
+
+        return JSON.parse(text);
 
     } catch (error) {
         throw new Error(error.message);
