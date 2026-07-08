@@ -18,7 +18,7 @@ export const uploadResume = async (req, res) => {
     const parsedData = await parseResume(rawText);
 
 
-    console.log(parsedData);
+    // console.log(parsedData);
     
 
   const result = await new Promise((resolve, reject) => {
