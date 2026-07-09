@@ -1,6 +1,7 @@
 import e from "express";
 import jobDescSchema from "../models/jobDescSchema.js";
 import { parseJobDescription } from "../services/aiServices.js";
+import extractJobTextFromUrl from "../utils/extractJobTextFromUrl.js";
 
 
 export const createJobDesc = async (req, res) => {
@@ -9,19 +10,25 @@ export const createJobDesc = async (req, res) => {
         const { jobTitle, jobDescription,company, sourceUrl } = req.body;
         // console.log(jobDescription);
         
-        
         if(!jobTitle || !jobDescription || !company) {
             return res.status(400).json({ message: "All fields are required", success: false });
         }
+        
+        let finalJobDescription = jobDescription;
+        const isUrl = /^https?:\/\/.+/i.test(jobDescription);
+        if(isUrl) {
+            finalJobDescription = await extractJobTextFromUrl(jobDescription);
+        }
 
-        const jobDescriptionParsed = await parseJobDescription(jobDescription);
+
+        const jobDescriptionParsed = await parseJobDescription(finalJobDescription);
 
         const jobDesc = await jobDescSchema.create({
             userID: req.user.id,
             jobTitle,
             company,
-            jobDescription,
-            sourceUrl,
+            jobDescription: finalJobDescription,
+            sourceUrl: isUrl ? jobDescription : "",
             parsedJobData: jobDescriptionParsed
             
         });
