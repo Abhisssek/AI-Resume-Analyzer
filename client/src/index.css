@@ -1,4 +1,5 @@
 @import "tailwindcss";
+/* @import url('https://fonts.googleapis.com/css2?family=Geomini:wght@200..800&display=swap'); */
 
 body{
   margin: 0;
@@ -6,7 +7,14 @@ body{
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: #000000;
+  background-color: #051224;
   color: white;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Geomini', sans-serif;
+}
+@theme {
+  --color-primary: #6366f1;
+  --color-secondary: #1e293b;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
 }
