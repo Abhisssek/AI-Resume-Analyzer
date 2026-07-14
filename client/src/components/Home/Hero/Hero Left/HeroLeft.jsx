@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 
 export const HeroLeft = () => {
   return (
-    <div className="w-1/2 mt-20 ">
+    <div className=" w-full lg:px-17 lg:py-10 px-3 py-2 lg:w-[55%] mt-20 ">
       <div className="flex gap-2 items-center bg-[#0e2343] w-fit py-2 px-5 rounded-full">
         <Sparkles className="text-primary mb-1" />
         <h1 className="text-xl font-semibold text-[#c9d7f6] ">Ai Powered Career Success</h1>

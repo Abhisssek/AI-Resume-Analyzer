@@ -5,8 +5,8 @@ import { HeroBottom } from './Hero Bottom/HeroBottom'
 
 export const Hero = () => {
   return (
-    <div className='px-17 py-5 '>
-    <div className='flex'>
+    <div className=''>
+    <div className='flex lg:flex-row flex-col justify-between gap-5'>
         <HeroLeft/>
         <HeroRight />
         

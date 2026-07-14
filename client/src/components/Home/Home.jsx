@@ -4,7 +4,7 @@ import { Hero } from './Hero/Hero'
 
 export const Home = () => {
   return (
-    <div>
+    <div className='w-full h-full'>
         <Navbar/>
         <Hero />
     </div>
