@@ -17,4 +17,6 @@ body{
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
+
+  --lmd: @media (width >= 739px )
 }

@@ -30,10 +30,10 @@ export const Navbar = () => {
         </div>
         
         
-        <div className='hidden lg:flex lg:flex-row  gap-15  justify-end items-center'>
+        <div className='hidden lg:flex lg:flex-row  gap-13  justify-end items-center'>
            {links.map((link)=>{
             return(
-              <Link to={link.link} className='text-lg xl:text-lg whitespace-nowrap hover:text-gray-300'>{link.name}</Link>
+              <Link to={link.link} className='text-lg tracking-wider font-semibold xl:text-lg whitespace-nowrap hover:text-gray-300'>{link.name}</Link>
             )
            })}
             <Link to="/get-started"><button className='bg-primary text-white text-lg xl:text-lg whitespace-nowrap font-bold  py-2 px-4 mb-1 hover:bg-primary/80 rounded '>Get Started</button></Link>
