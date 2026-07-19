@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Geomini:wght@200..800&display=swap');
 @import "tailwindcss";
 /* @import url('https://fonts.googleapis.com/css2?family=Geomini:wght@200..800&display=swap'); */
 
@@ -9,7 +10,7 @@ body{
   /* overflow: hidden; */
   background-color: #051224;
   color: white;
-  font-family: 'Geomini', sans-serif;
+  font-family: "Elms Sans", sans-serif;
 }
 @theme {
   --color-primary: #6366f1;
@@ -17,6 +18,16 @@ body{
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
+  --color-s-primary:#798091
+  
+}
 
-  --lmd: @media (width >= 739px )
+
+.sidebar{
+ /* From https://css.glass */
+background: rgba(27, 28, 71, 0.3);
+/* border-radius: 0 16px 16; */
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(8.4px);
+-webkit-backdrop-filter: blur(8.4px);
 }
