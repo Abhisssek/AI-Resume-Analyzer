@@ -56,7 +56,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials", success: false });
     }
 
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
@@ -95,4 +95,14 @@ export const logout = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message, success: false });
   }
+}
+
+
+export const checkAuh = async (req, res)=>{
+  try {
+    return res.status(200).json({ message: "User logged in", success: true, user: req.user });
+  } catch (error) {
+    return res.status(500).json({ message: error.message, success: false });
+  }
+
 }
