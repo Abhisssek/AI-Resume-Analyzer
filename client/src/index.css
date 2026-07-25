@@ -2,11 +2,12 @@
 @import "tailwindcss";
 /* @import url('https://fonts.googleapis.com/css2?family=Geomini:wght@200..800&display=swap'); */
 
-body{
+body, html {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100vh;
+  /* width: 100vw; */
+  /* height: 100vh; */
+  box-sizing: border-box;
   /* overflow: hidden; */
   background-color: #051224;
   color: white;

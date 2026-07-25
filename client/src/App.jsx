@@ -22,9 +22,7 @@ export const App = () => {
     {path: "/resume", element:<Resume />},
     {path: "/job-description", element:<JobDescription/>},
     {path: "/analysis", element:<Analysis/>},
-    {path: "/history", element:<History/>}
-
-
+    {path: "/history", element:<History/>},
   ]);
 
   return (

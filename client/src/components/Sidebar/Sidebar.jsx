@@ -1,134 +1,224 @@
-import { Brain } from "lucide-react";
+import React from "react";
 import {
-  LogOut,
+  Brain,
   LayoutDashboard,
   FileUser,
   FileText,
   ChartLine,
   History,
+  LogOut,
 } from "lucide-react";
-import React from "react";
-import { NavLink } from "react-router";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-
-import { toast } from "react-hot-toast";
+import { NavLink, useNavigate } from "react-router";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { api } from "../../services/api";
-import { useNavigate } from "react-router";
-
+import { useAuth } from "../Home/Auth/AuthProvider";
 
 export const Sidebar = () => {
-
-
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-  // const toggleOpen = () => setOpen(!open)
+  const { user } = useAuth();
 
   const links = [
     {
       name: "Dashboard",
-      link: "/dashboard",
-      element: <LayoutDashboard />,
+      path: "/dashboard",
+      icon: <LayoutDashboard size={20} />,
     },
     {
-      name: "Resume",
-      link: "/resume",
-      element: <FileUser />,
+      name: "Resumes",
+      path: "/resume",
+      icon: <FileUser size={20} />,
     },
     {
-      name: "Job Description",
-      link: "/job-description",
-      element: <FileText />,
+      name: "Job Descriptions",
+      path: "/job-description",
+      icon: <FileText size={20} />,
     },
     {
-      name: "Analysis",
-      link: "/analysis",
-      element: <ChartLine />,
+      name: "Analyses",
+      path: "/analysis",
+      icon: <ChartLine size={20} />,
     },
     {
       name: "History",
-      link: "/history",
-      element: <History />,
+      path: "/history",
+      icon: <History size={20} />,
     },
   ];
 
-
   const handleLogout = async () => {
     try {
-    const res =  await axios.get(api.defaults.baseURL + 'users/logout',{
+      const res = await axios.get(api.defaults.baseURL + "users/logout", {
         withCredentials: true,
-      })
-      console.log(res.data);
-      if(res.data.success){
+      });
+
+      if (res.data.success) {
         toast.success(res.data.message);
-        navigate('/');
+        navigate("/");
       }
-    } catch (error) {
-      console.log(error);
-      // toast.error(error);
+    } catch (err) {
+      toast.error("Logout Failed");
     }
-  }
-
-
+  };
 
   return (
-    <div className="w-full relative md:w-[25%] md:bg-[rgba(27,28,71,0.3)] md:shadow-[0_4px_30px_rgba(0,0,0,0.1)] md:backdrop-blur-[8.4px] p-10 flex flex-col gap-25 md:h-screen justify-between">
-      <div className="flex items-center gap-5">
-        <Brain className="w-9 md:w-fit" size={52} color="#6366f1" />
-        <h2 className="w-25 md:w-fit text-md lg:text-2xl font-bold">
-          AI Resume Analyzer
-        </h2>
-      </div>
-      <div className="hidden md:flex md:flex-col gap-9 ">
-        {links.map((link, index) => (
-          <NavLink
-            key={index}
-            to={link.link}
-            className={({
-              isActive,
-            }) => `text-lg font-light tracking-wider xl:text-2xl  hover:text-gray-300
-            ${
-              isActive
-                ? "bg-[rgba(38,11,110,0.2)] rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[9.6px] border border-[rgba(38,11,110,0.3)] px-3 py-3"
-                : "px-3 "
-            } `}
-          >
-            <div className="flex gap-2 items-center">
-              {/* {link.element} */}
-              {link.name}
+    <>
+      {/* ================= Desktop Sidebar ================= */}
+
+      <aside
+        className="
+        hidden
+        md:flex
+        w-[280px]
+        min-h-screen
+        bg-[#08152b]
+        border-r
+        border-slate-800
+        flex-col
+        justify-between
+        p-6
+        sticky
+        top-0
+        "
+      >
+        <div>
+          {/* Logo */}
+
+          <div className="flex items-center gap-3 mb-12">
+            <div className="p-3 rounded-xl bg-indigo-600/10">
+              <Brain size={32} className="text-indigo-500" />
             </div>
-          </NavLink>
-        ))}
-      </div>
 
-      <div onClick={handleLogout} className="absolute right-8 top-[-80px] md:static flex gap-2 items-center mt-35">
-        <LogOut className="font-bold" size={20} color="#6366f1" />
-        <span className="font-bold md:block hidden">Logout</span>
-      </div>
+            <div>
+              <h2 className="font-bold text-lg">AI Resume</h2>
 
-      <div className="md:hidden fixed bottom-5 left-0 right-0 bg-[rgba(27, 28, 71, 0.3)] backdrop-blur-[8.4px] border-t border-secondary">
-        <div className="flex justify-around items-center p-2">
-          {links.map((link, index) => (
-            <NavLink
-              key={index}
-              to={link.link}
-              className={({ isActive }) =>
-                `p-2 rounded-xl ${
-                  isActive
-                    ? "bg-[rgba(38,11,110,0.2)] rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[9.6px] border border-[rgba(38,11,110,0.3)]"
-                    : ""
-                } `
-              }
-            >
-              <div onClick={handleLogout} className="flex flex-col items-center">
-                {link.element}
-                {/* <span className="text-xs mt-1">{link.name}</span> */}
+              <p className="text-sm text-slate-400">Analyzer</p>
+            </div>
+          </div>
+
+          {/* Navigation */}
+
+          <div className="space-y-2">
+            {links.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) =>
+                  `
+                  flex
+                  items-center
+                  gap-4
+                  px-4
+                  py-3
+                  rounded-xl
+                  transition-all
+                  duration-200
+                  ${
+                    isActive
+                      ? "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
+                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                  }
+                  `
+                }
+              >
+                {link.icon}
+
+                <span>{link.name}</span>
+              </NavLink>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom */}
+
+        <div className="space-y-5">
+          <div className="border-t border-slate-700"></div>
+
+          <div className="flex items-center gap-3">
+             <img
+              src={`https://ui-avatars.com/api/?name=${user.name}`}
+              className="w-11 h-11 rounded-full"
+            />
+
+            <div>
+              <h4 className="font-semibold">{user?.name}</h4>
+
+              <p className="text-sm text-slate-400">Resume Builder</p>
+            </div>
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="
+            w-full
+            flex
+            items-center
+            gap-3
+            px-4
+            py-3
+            rounded-xl
+            hover:bg-red-500/10
+            text-red-400
+            transition
+            "
+          >
+            <LogOut size={20} />
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      {/* ================= Mobile Bottom Navigation ================= */}
+
+      {/* ================= Mobile ================= */}
+
+      <div className="md:hidden">
+        {/* Top Navbar */}
+
+        <div className="fixed top-0 left-0 right-0 z-50 bg-[#08152b]/95 backdrop-blur-md border-b border-slate-700">
+          <div className="flex items-center justify-between px-5 py-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-indigo-600/10">
+                <Brain size={28} className="text-indigo-500" />
               </div>
-            </NavLink>
-          ))}
+
+              <div>
+                <h2 className="text-sm font-bold text-white">AI Resume</h2>
+
+                <p className="text-xs text-slate-400">Analyzer</p>
+              </div>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-red-400"
+            >
+              <LogOut size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Navigation */}
+
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#08152b]/95 backdrop-blur-md border-t border-slate-700">
+          <div className="flex justify-around items-center py-3">
+            {links.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) =>
+                  `flex flex-col items-center gap-1 text-xs transition-all
+            ${isActive ? "text-indigo-400" : "text-slate-400"}`
+                }
+              >
+                {link.icon}
+
+                <span>{link.name}</span>
+              </NavLink>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
