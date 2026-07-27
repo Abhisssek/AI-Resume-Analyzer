@@ -7,10 +7,13 @@ import { useState } from "react";
 import axios from "axios";
 import { api } from "../../services/api";
 import { Eye } from "lucide-react";
+import { ResumeModal } from "./ResumeModal";
+import { X } from "lucide-react";
 
 export const Resume = () => {
   const { user, userLoading, fetchUser } = useAuth();
   const [resumes, setResumes] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -36,6 +39,9 @@ export const Resume = () => {
 
   // console.log(resumes);
 
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
 
 
   const downloadResume = async (resume) => {
@@ -66,6 +72,12 @@ export const Resume = () => {
   return (
     <div className="min-h-screen bg-[#07162d] text-white md:flex">
       <Sidebar />
+     {modalOpen &&(
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl w-[95%] sm:w-[80%] h-[80%] bg-[#07162d] border border-slate-700 z-10">
+          <ResumeModal toggleModal={toggleModal} fetchResume={fetchResume}/>
+          
+        </div>
+     )}
 
       <main className="flex-1 p-6 md:p-10 pt-24 md:pt-10">
         {/* Header */}
@@ -77,7 +89,7 @@ export const Resume = () => {
             </p>
           </div>
 
-          <button className="bg-indigo-600 hover:bg-indigo-500 transition px-6 py-3 rounded-xl font-semibold">
+          <button onClick={toggleModal} className="bg-indigo-600 hover:bg-indigo-500 transition px-6 py-3 rounded-xl font-semibold">
             Upload Resume
           </button>
         </div>
