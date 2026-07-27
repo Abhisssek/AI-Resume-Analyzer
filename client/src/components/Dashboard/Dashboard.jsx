@@ -115,7 +115,7 @@ export const Dashboard = () => {
       ? chartData
       : chartData.filter((item) => item.month === selectedMonth);
 
-  console.log(chartData);
+  // console.log(chartData);
 
   return (
     <div className="min-h-screen bg-[#07162d] text-white md:flex">
