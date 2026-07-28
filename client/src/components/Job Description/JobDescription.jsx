@@ -4,12 +4,18 @@ import { useState, useEffect } from "react";
 import { JobDescriptionManual } from "./JobDescriptionManual";
 import { useAuth } from "../Home/Auth/AuthProvider";
 import { Navigate } from "react-router";
+// import { JobDescriptionURL } from "./JobDescriptionURL";
+import { Link } from "react-router";
+import axios from "axios";
+import { api } from "../../services/api";
+// import { JobDescriptionResult } from "./JobDescriptionResult";
 
 export const JobDescription = () => {
   // const [open, setOpen] = React.useState(false);
 
   const { user, userLoading, fetchUser } = useAuth();
-  const [activeTab, setActiveTab] = useState("manual");
+  // const [activeTab, setActiveTab] = useState("manual");
+  const [jobDescription, setJobDescription] = useState([]);
 
   useEffect(() => {
     fetchUser();
@@ -22,13 +28,34 @@ export const JobDescription = () => {
   ];
 
 
-//   console.log("JobDescription", {
-//   user,
-//   userLoading,
-// });
+  const fetchJobDescription = async(data) => {
+    try {
+      const result = await axios.get(api.defaults.baseURL + "jobdesc",{
+        withCredentials: true
+      })
+      // console.log(result);
+      
+      setJobDescription(result.data.jobDescs);
+    } catch (error) {
+      console.log(error);
+      
+    }
+  };
+
+
+  useEffect(() => {
+    fetchJobDescription();
+  }, []);
+
+  //   console.log("JobDescription", {
+  //   user,
+  //   userLoading,
+  // });
+  // console.log(jobDescription);
+  
 
   if (userLoading) return <div>Loading...</div>;
-  if(!user && !userLoading) return <Navigate to="/" replace />
+  if (!user && !userLoading) return <Navigate to="/" replace />;
 
   // const toggleType = () => setOpen(!open);
   return (
@@ -51,72 +78,64 @@ export const JobDescription = () => {
           <div className="flex flex-col xl:flex-row gap-8">
             {/* Left Section */}
             <div className="flex-1">
-              {/* Tabs */}
-              <div className="flex w-full max-w-md rounded-xl overflow-hidden border border-slate-700 mb-8">
-                <button
-                  onClick={() => setActiveTab("manual")}
-                  className={`flex-1 py-3 font-medium transition ${
-                    activeTab === "manual"
-                      ? "bg-indigo-600 text-white"
-                      : "bg-[#102243] text-slate-400 hover:bg-[#13284e]"
-                  }`}
-                >
-                  Create Manually
-                </button>
-
-                <button
-                  onClick={() => setActiveTab("url")}
-                  className={`flex-1 py-3 font-medium transition ${
-                    activeTab === "url"
-                      ? "bg-indigo-600 text-white"
-                      : "bg-[#102243] text-slate-400 hover:bg-[#13284e]"
-                  }`}
-                >
-                  Paste Job URL
-                </button>
-              </div>
-
-              {/* Forms */}
-              {activeTab === "manual" ? (
-                <JobDescriptionManual />
-              ) : (
-                <div className="space-y-6">
-                  <div>
-                    <label className="block mb-2 text-sm text-slate-300">
-                      Job URL
-                    </label>
-
-                    <input
-                      type="text"
-                      placeholder="https://linkedin.com/jobs/..."
-                      className="w-full rounded-xl border border-slate-700 bg-[#09172f] px-4 py-3 text-white placeholder:text-slate-500 focus:border-indigo-500 outline-none"
-                    />
-                  </div>
-
-                  <button className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 transition py-3 font-semibold">
-                    Analyze Job URL
-                  </button>
-                </div>
-              )}
+               <JobDescriptionManual fetchJobDescription={fetchJobDescription} />
             </div>
 
             {/* Right Section */}
-            <div className="xl:w-[300px]">
-              <div className="bg-[#102243] border border-slate-700 rounded-2xl p-6 h-fit">
-                <h2 className="text-xl font-semibold mb-8">How it works?</h2>
+            <div className="xl:w-[450px] ">
+              <div className="bg-[#102243] border border-slate-700 rounded-2xl p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <h2 className="text-lg font-semibold">
+                    Parsed Job Descriptions
+                  </h2>
 
-                <div className="space-y-8">
-                  {steps.map((step, index) => (
-                    <div key={index} className="flex items-start gap-4">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-600 text-white font-bold shrink-0">
+                  <Link
+                    to="/job-description/all"
+                    className="text-sm text-indigo-400 hover:text-indigo-300 font-medium"
+                  >
+                    View All
+                  </Link>
+                </div>
+
+                <div className=" space-y-4">
+                  {jobDescription.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3).map((job, index) => (
+                    <div
+                      key={job._id}
+                      className="flex gap-3 pb-4 border-b border-slate-700 last:border-none last:pb-0"
+                    >
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white text-sm font-semibold shrink-0">
                         {index + 1}
                       </div>
 
-                      <p className="text-slate-300 leading-6">{step}</p>
+                      <div className="flex-1 overflow-hidden">
+                        <h3 className="text-white font-sm line-clamp-1">
+                          {job?.jobTitle || "Untitled Job"}
+                        </h3>
+
+                        <p className="text-sm text-slate-400 line-clamp-2 mt-1">
+                          {job.jobDescription}
+                        </p>
+
+                        <p className="text-sm text-primary  font-bold line-clamp-2 mt-1">
+                          - {job.company}
+                        </p>
+
+
+                        <p className="text-xs text-slate-500 mt-2">
+                          {new Date(job.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
                   ))}
+
+                  {jobDescription.length === 0 && (
+                    <p className="text-center text-slate-400 py-6">
+                      No parsed job descriptions yet.
+                    </p>
+                  )}
                 </div>
               </div>
+             
             </div>
           </div>
         </div>
