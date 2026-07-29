@@ -12,6 +12,9 @@ import { JobDescription } from "./components/Job Description/JobDescription";
 import { Analysis } from "./components/Analysis/Analysis";
 import { History } from "./components/History/History";
 import { JobDescriptionsAll } from "./components/Job Description/JobDescriptionsAll";
+import { AnalysisAll } from "./components/Analysis/AnalysisAll";
+import { AnalysisCard } from "./components/Analysis/AnalysisCard";
+import { AnalysisDetail } from "./components/Analysis details/AnalysisDetails";
 
 export const App = () => {
   const routes = createBrowserRouter([
@@ -25,6 +28,8 @@ export const App = () => {
     {path: "/job-description/all", element:<JobDescriptionsAll/>},
     {path: "/analysis", element:<Analysis/>},
     {path: "/history", element:<History/>},
+    {path: "/analysis/all", element:<AnalysisAll/>},
+    {path: "/analysis/:id", element:<AnalysisDetail/>},
   ]);
 
   return (

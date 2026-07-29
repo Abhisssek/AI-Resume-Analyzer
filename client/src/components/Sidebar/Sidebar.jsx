@@ -136,7 +136,7 @@ export const Sidebar = () => {
 
           <div className="flex items-center gap-3">
              <img
-              src={`https://ui-avatars.com/api/?name=${user.name}`}
+              src={`https://ui-avatars.com/api/?name=${user?.name}`}
               className="w-11 h-11 rounded-full"
             />
 

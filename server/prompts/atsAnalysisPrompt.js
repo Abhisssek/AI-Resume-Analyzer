@@ -87,6 +87,8 @@ Return ONLY this JSON structure:
 
   "strengths": [],
 
+  "weaknesses": [],
+
   "improvementAreas": [],
 
   "sectionScores": {
