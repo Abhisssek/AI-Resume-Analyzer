@@ -21,6 +21,7 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
+import { Loader } from "../Loader/Loader";
 
 export const Dashboard = () => {
   const { user, userLoading, fetchUser } = useAuth();
@@ -29,12 +30,15 @@ export const Dashboard = () => {
   const [analysis, setAnalysis] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState("All");
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetchUser();
   }, []);
 
   useEffect(() => {
     async function loadData() {
+      setLoading(true);
       const resumeRes = await axios.get(api.defaults.baseURL + "resumes", {
         withCredentials: true,
       });
@@ -43,6 +47,8 @@ export const Dashboard = () => {
         withCredentials: true,
       });
 
+
+      if(resumeRes.data.success && analysisRes.data.success) setLoading(false);
       setResume(resumeRes.data.resumes);
       setAnalysis(analysisRes.data.analysis);
     }
@@ -50,7 +56,7 @@ export const Dashboard = () => {
     loadData();
   }, []);
 
-  if (userLoading) return <div>Loading...</div>;
+  if (userLoading) return <Loader />;
 
   if (!userLoading && !user) return <Navigate to="/" replace />;
 
@@ -144,6 +150,9 @@ export const Dashboard = () => {
 
         {/* Cards */}
 
+      {loading ? <Loader /> : (
+        
+      <>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
           {stats.map((card) => (
             <div
@@ -292,6 +301,8 @@ export const Dashboard = () => {
             </div>
           </div>
         </div>
+        </>
+        )}
       </main>
     </div>
   );

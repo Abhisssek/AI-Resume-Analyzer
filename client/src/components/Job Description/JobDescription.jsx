@@ -9,6 +9,7 @@ import { Link } from "react-router";
 import axios from "axios";
 import { api } from "../../services/api";
 // import { JobDescriptionResult } from "./JobDescriptionResult";
+import { Loader } from "../Loader/Loader";
 
 export const JobDescription = () => {
   // const [open, setOpen] = React.useState(false);
@@ -16,6 +17,7 @@ export const JobDescription = () => {
   const { user, userLoading, fetchUser } = useAuth();
   // const [activeTab, setActiveTab] = useState("manual");
   const [jobDescription, setJobDescription] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchUser();
@@ -27,21 +29,22 @@ export const JobDescription = () => {
     "Compare with your resume and get ATS score.",
   ];
 
-
-  const fetchJobDescription = async(data) => {
+  const fetchJobDescription = async (data) => {
     try {
-      const result = await axios.get(api.defaults.baseURL + "jobdesc",{
-        withCredentials: true
-      })
+      setLoading(true);
+      const result = await axios.get(api.defaults.baseURL + "jobdesc", {
+        withCredentials: true,
+      });
       // console.log(result);
-      
+
+      if (result.data.success) setLoading(false);
       setJobDescription(result.data.jobDescs);
     } catch (error) {
       console.log(error);
-      
+    } finally {
+      setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchJobDescription();
@@ -52,9 +55,8 @@ export const JobDescription = () => {
   //   userLoading,
   // });
   // console.log(jobDescription);
-  
 
-  if (userLoading) return <div>Loading...</div>;
+  if (userLoading) return <Loader />;
   if (!user && !userLoading) return <Navigate to="/" replace />;
 
   // const toggleType = () => setOpen(!open);
@@ -78,7 +80,7 @@ export const JobDescription = () => {
           <div className="flex flex-col xl:flex-row gap-8">
             {/* Left Section */}
             <div className="flex-1">
-               <JobDescriptionManual fetchJobDescription={fetchJobDescription} />
+              <JobDescriptionManual fetchJobDescription={fetchJobDescription} />
             </div>
 
             {/* Right Section */}
@@ -97,45 +99,52 @@ export const JobDescription = () => {
                   </Link>
                 </div>
 
-                <div className=" space-y-4">
-                  {jobDescription.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3).map((job, index) => (
-                    <div
-                      key={job._id}
-                      className="flex gap-3 pb-4 border-b border-slate-700 last:border-none last:pb-0"
-                    >
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white text-sm font-semibold shrink-0">
-                        {index + 1}
-                      </div>
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <div className=" space-y-4">
+                    {jobDescription
+                      .sort(
+                        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+                      )
+                      .slice(0, 3)
+                      .map((job, index) => (
+                        <div
+                          key={job._id}
+                          className="flex gap-3 pb-4 border-b border-slate-700 last:border-none last:pb-0"
+                        >
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white text-sm font-semibold shrink-0">
+                            {index + 1}
+                          </div>
 
-                      <div className="flex-1 overflow-hidden">
-                        <h3 className="text-white font-sm line-clamp-1">
-                          {job?.jobTitle || "Untitled Job"}
-                        </h3>
+                          <div className="flex-1 overflow-hidden">
+                            <h3 className="text-white font-sm line-clamp-1">
+                              {job?.jobTitle || "Untitled Job"}
+                            </h3>
 
-                        <p className="text-sm text-slate-400 line-clamp-2 mt-1">
-                          {job.jobDescription}
-                        </p>
+                            <p className="text-sm text-slate-400 line-clamp-2 mt-1">
+                              {job.jobDescription}
+                            </p>
 
-                        <p className="text-sm text-primary  font-bold line-clamp-2 mt-1">
-                          - {job.company}
-                        </p>
+                            <p className="text-sm text-primary  font-bold line-clamp-2 mt-1">
+                              - {job.company}
+                            </p>
 
+                            <p className="text-xs text-slate-500 mt-2">
+                              {new Date(job.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
 
-                        <p className="text-xs text-slate-500 mt-2">
-                          {new Date(job.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-
-                  {jobDescription.length === 0 && (
-                    <p className="text-center text-slate-400 py-6">
-                      No parsed job descriptions yet.
-                    </p>
-                  )}
-                </div>
+                    {jobDescription.length === 0 && (
+                      <p className="text-center text-slate-400 py-6">
+                        No parsed job descriptions yet.
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
-             
             </div>
           </div>
         </div>

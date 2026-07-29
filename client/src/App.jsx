@@ -11,6 +11,7 @@ import { Resume } from "./components/Resume/Resume";
 import { JobDescription } from "./components/Job Description/JobDescription";
 import { Analysis } from "./components/Analysis/Analysis";
 import { History } from "./components/History/History";
+import { JobDescriptionsAll } from "./components/Job Description/JobDescriptionsAll";
 
 export const App = () => {
   const routes = createBrowserRouter([
@@ -21,6 +22,7 @@ export const App = () => {
     {path: "/dashboard", element: <Dashboard />},
     {path: "/resume", element:<Resume />},
     {path: "/job-description", element:<JobDescription/>},
+    {path: "/job-description/all", element:<JobDescriptionsAll/>},
     {path: "/analysis", element:<Analysis/>},
     {path: "/history", element:<History/>},
   ]);
