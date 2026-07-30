@@ -10,7 +10,7 @@ import { Dashboard } from "./components/Dashboard/Dashboard";
 import { Resume } from "./components/Resume/Resume";
 import { JobDescription } from "./components/Job Description/JobDescription";
 import { Analysis } from "./components/Analysis/Analysis";
-import { History } from "./components/History/History";
+// import { History } from "./components/History/History";
 import { JobDescriptionsAll } from "./components/Job Description/JobDescriptionsAll";
 import { AnalysisAll } from "./components/Analysis/AnalysisAll";
 import { AnalysisCard } from "./components/Analysis/AnalysisCard";
@@ -27,7 +27,7 @@ export const App = () => {
     {path: "/job-description", element:<JobDescription/>},
     {path: "/job-description/all", element:<JobDescriptionsAll/>},
     {path: "/analysis", element:<Analysis/>},
-    {path: "/history", element:<History/>},
+    // {path: "/history", element:<History/>},
     {path: "/analysis/all", element:<AnalysisAll/>},
     {path: "/analysis/:id", element:<AnalysisDetail/>},
   ]);

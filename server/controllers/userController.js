@@ -7,26 +7,64 @@ export const register = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields are required", success: false });
+      return res.status(400).json({
+        message: "All fields are required",
+        success: false,
+      });
+    }
+
+    // Name: at least 3 characters
+    if (name.trim().length < 3) {
+      return res.status(400).json({
+        message: "Name must be at least 3 characters long",
+        success: false,
+      });
+    }
+
+    // Email Regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        message: "Please enter a valid email address",
+        success: false,
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: "Password must be at least 6 characters long",
+        success: false,
+      });
     }
 
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists", success: false });
+      return res.status(400).json({
+        message: "User already exists",
+        success: false,
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      name,
-      email,
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
       password: hashedPassword,
     });
 
-    res.status(200).json({ message: "User created successfully", success: true }, user);
+    return res.status(201).json({
+      message: "User created successfully",
+      success: true,
+      user,
+    });
   } catch (error) {
-    return res.status(500).json({ message: error.message, success: false });
+    return res.status(500).json({
+      message: error.message,
+      success: false,
+    });
   }
 };
 
@@ -35,33 +73,41 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: "All fields are required", success: false });
+      return res
+        .status(400)
+        .json({ message: "All fields are required", success: false });
     }
 
     const user = await User.findOne({ email });
-    
-    if(req.cookies.token){
-       return res.status(400).json({ message: "User already logged in", success: false });
-        // return;
+
+    if (req.cookies.token) {
+      return res
+        .status(400)
+        .json({ message: "User already logged in", success: false });
+      // return;
     }
 
-   
     if (!user) {
-      return res.status(404).json({ message: "User not found", success: false });
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid credentials", success: false });
+      return res
+        .status(400)
+        .json({ message: "Invalid credentials", success: false });
     }
 
-    const token = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-
-
+    const token = jwt.sign(
+      { id: user._id, email: user.email, name: user.name },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      },
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -69,40 +115,41 @@ export const login = async (req, res) => {
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-  
 
-
-    
-    return res.status(200).json({ message: "Login successful", user, token, success: true });
+    return res
+      .status(200)
+      .json({ message: "Login successful", user, token, success: true });
   } catch (error) {
     console.log("error coming here");
-    
+
     return res.status(500).json({ message: error.message, success: false });
   }
 };
-
-
 
 export const logout = async (req, res) => {
   try {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).json({ message: "user already logged out", success: false });
+      return res
+        .status(401)
+        .json({ message: "user already logged out", success: false });
     }
     res.clearCookie("token");
-    return res.status(200).json({ message: "Logout successful", success: true });
+    return res
+      .status(200)
+      .json({ message: "Logout successful", success: true });
   } catch (error) {
     return res.status(500).json({ message: error.message, success: false });
   }
-}
+};
 
-
-export const checkAuh = async (req, res)=>{
+export const checkAuh = async (req, res) => {
   try {
-    return res.status(200).json({ message: "User logged in", success: true, user: req.user });
+    return res
+      .status(200)
+      .json({ message: "User logged in", success: true, user: req.user });
   } catch (error) {
     return res.status(500).json({ message: error.message, success: false });
   }
-
-}
+};
