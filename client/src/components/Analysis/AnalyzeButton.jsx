@@ -13,7 +13,7 @@ export const AnalyzeButton = ({
 
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-indigo-600 hidden lg:flex items-center justify-center">
               <Sparkles size={22} />
             </div>
 

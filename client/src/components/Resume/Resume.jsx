@@ -70,7 +70,7 @@ export const Resume = () => {
   if (!user && !userLoading) return <Navigate to="/" replace />;
 
   return (
-    <div className="min-h-screen bg-[#07162d] text-white md:flex">
+    <div className="min-h-screen bg-[#07162d] text-white mb-19 md:lg-0 md:flex">
       <Sidebar />
       {modalOpen && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl w-[95%] sm:w-[80%] h-[80%] bg-[#07162d] border border-slate-700 z-10">

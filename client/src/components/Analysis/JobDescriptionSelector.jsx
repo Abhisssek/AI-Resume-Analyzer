@@ -7,6 +7,7 @@ import {
   Clock3,
   CheckCircle2,
 } from "lucide-react";
+import { useNavigate } from "react-router";
 
 export const JobDescriptionSelector = ({
   jobs,
@@ -16,7 +17,9 @@ export const JobDescriptionSelector = ({
 }) => {
   const [search, setSearch] = useState("");
 
-  console.log(jobs);
+  const navigate = useNavigate();
+
+  // console.log(jobs);
   
 
   const filteredJobs = useMemo(() => {
@@ -123,7 +126,7 @@ export const JobDescriptionSelector = ({
                     <div className="flex justify-between">
                       <div className="flex gap-4">
                         <div
-                          className={`w-14 h-14 rounded-xl flex justify-center items-center
+                          className={`w-14 h-14 rounded-xl hidden md:flex justify-center items-center
 
                           ${
                             selectedJob?._id === job._id
@@ -135,7 +138,7 @@ export const JobDescriptionSelector = ({
                         </div>
 
                         <div>
-                          <h3 className="font-semibold text-lg">
+                          <h3 className="font-semibold text-md sm:text-lg">
                             {title}
                           </h3>
 
@@ -192,7 +195,9 @@ export const JobDescriptionSelector = ({
               {filteredJobs.length !== 1 && "s"}
             </span>
 
-            <button className="text-indigo-400 hover:text-indigo-300 font-medium">
+            <button onClick={()=>{
+              navigate("/job-description/all")
+            }} className="text-indigo-400 hover:text-indigo-300 font-medium">
               View All
             </button>
           </div>

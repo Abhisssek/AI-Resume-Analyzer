@@ -39,11 +39,7 @@ export const Sidebar = () => {
       path: "/analysis",
       icon: <ChartLine size={20} />,
     },
-    {
-      name: "History",
-      path: "/history",
-      icon: <History size={20} />,
-    },
+    
   ];
 
   const handleLogout = async () => {

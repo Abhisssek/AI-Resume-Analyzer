@@ -77,7 +77,7 @@ export const AnalysisAll = () => {
             Loading...
           </div>
         ) : filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).length ? (
-          <div className="grid gap-6">
+          <div className="grid gap-6 mb-19 md:mb-0">
             {filtered.map((analysis) => (
               <AnalysisCard
                 key={analysis._id}

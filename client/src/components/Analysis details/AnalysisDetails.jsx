@@ -28,7 +28,7 @@ export const AnalysisDetail = () => {
         },
       );
 
-      console.log(data);
+      // console.log(data);
 
       setAnalysis(data.analysis);
     } catch (err) {
@@ -42,7 +42,7 @@ export const AnalysisDetail = () => {
     fetchAnalysis();
   }, []);
 
-  console.log(analysis);
+  // console.log(analysis);
 
   if (loading) {
     return (
@@ -198,7 +198,7 @@ export const AnalysisDetail = () => {
         <div className="mt-6">
           <InformationCards analysis={analysis} />
         </div>
-        <div className="mt-6">
+        <div className="mt-6 mb-19 md:mb-0">
           <WeaknessesCard weaknesses={analysis.weaknesses} />
         </div>
       </main>

@@ -8,6 +8,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+import { useNavigate } from "react-router";
+
 export const ResumeSelector = ({
   resumes,
   loading,
@@ -15,6 +17,8 @@ export const ResumeSelector = ({
   setSelectedResume,
 }) => {
   const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
 
   const filteredResumes = useMemo(() => {
     return resumes.filter((resume) =>
@@ -92,7 +96,7 @@ export const ResumeSelector = ({
         <>
           {/* Resume List */}
 
-          <div className="space-y-4 max-h-[470px] overflow-y-auto pr-2">
+          <div className="space-y-4  max-h-[470px] overflow-y-auto pr-2">
             {filteredResumes.length > 0 ? (
               filteredResumes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((resume) => (
                 <div
@@ -110,7 +114,7 @@ export const ResumeSelector = ({
                     {/* Icon */}
 
                     <div
-                      className={`w-14 h-14 rounded-xl flex items-center justify-center
+                      className={`hidden md:flex w-14 h-14 rounded-xl  items-center justify-center
                       
                       ${
                         selectedResume?._id === resume._id
@@ -124,7 +128,7 @@ export const ResumeSelector = ({
                     {/* Info */}
 
                     <div>
-                      <h3 className="font-semibold break-all">
+                      <h3 className="font-semibold text-sm md:text-lg break-all">
                         {resume.fileName}
                       </h3>
 
@@ -169,7 +173,9 @@ export const ResumeSelector = ({
               {filteredResumes.length !== 1 && "s"} Found
             </span>
 
-            <button className="text-indigo-400 hover:text-indigo-300 font-medium">
+            <button onClick={()=>{
+              navigate("/resume")
+            }} className="text-indigo-400 hover:text-indigo-300 font-medium">
               View All
             </button>
           </div>

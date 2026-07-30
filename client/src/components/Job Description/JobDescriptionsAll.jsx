@@ -32,7 +32,7 @@ export const JobDescriptionsAll = () => {
       const res = await axios.get(api.defaults.baseURL + "jobdesc", {
         withCredentials: true,
       });
-      console.log(res);
+      // console.log(res);
 
       if (res.data.success) {
         setJobs(res.data.jobDescs);
@@ -92,7 +92,7 @@ export const JobDescriptionsAll = () => {
     <div className="min-h-screen bg-[#07162d] text-white md:flex">
       <Sidebar />
 
-      <div className="flex-1 p-6 md:p-10">
+      <div className="flex-1 px-6 pt-24 pb-28 md:p-10">
         {/* Header */}
 
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-10">
@@ -143,7 +143,7 @@ export const JobDescriptionsAll = () => {
               className="
     grid
     grid-cols-1
-    md:grid-cols-2
+    lg:grid-cols-2
     xl:grid-cols-3
     gap-6
     items-stretch

@@ -196,10 +196,10 @@ export const Dashboard = () => {
                 </div>
               )}
 
-              {analysis.slice(0, 5).map((item) => (
+              {analysis.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5).map((item) => (
                 <div
                   key={item._id}
-                  className="flex justify-between items-center p-4 rounded-xl bg-[#07162d] border border-slate-800 hover:border-indigo-500 transition"
+                  className="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-0 sm:items-center p-4 rounded-xl bg-[#07162d] border border-slate-800 hover:border-indigo-500 transition"
                 >
                   <div>
                     <h3 className="font-semibold truncate w-[180px]">
@@ -216,13 +216,13 @@ export const Dashboard = () => {
                   </div>
 
                   <div
-                    className={`px-3 py-2 rounded-lg font-bold text-sm
+                    className={` font-bold text-md
             ${
               item.atsScore >= 80
-                ? "bg-green-500/20 text-green-400"
+                ? " text-green-400"
                 : item.atsScore >= 60
-                  ? "bg-yellow-500/20 text-yellow-400"
-                  : "bg-red-500/20 text-red-400"
+                  ? " text-yellow-400"
+                  : " text-red-400"
             }`}
                   >
                     {item.atsScore}%

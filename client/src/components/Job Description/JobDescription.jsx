@@ -64,7 +64,7 @@ export const JobDescription = () => {
     <div className="min-h-screen bg-[#07162d] text-white md:flex">
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-10 pt-24 md:pt-10">
+      <main className="flex-1 p-6 md:p-10 pt-24 md:pt-10 mb-7">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5">
           <div>
@@ -102,7 +102,7 @@ export const JobDescription = () => {
                 {loading ? (
                   <Loader />
                 ) : (
-                  <div className=" space-y-4">
+                  <div className=" space-y-4 ">
                     {jobDescription
                       .sort(
                         (a, b) => new Date(b.createdAt) - new Date(a.createdAt),

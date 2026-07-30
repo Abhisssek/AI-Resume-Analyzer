@@ -42,9 +42,9 @@ export const SelectionSummary = ({
 
         <div className="bg-[#07162d] border border-slate-700 rounded-xl p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center">
+            {/* <div className="w-12 h-12 rounded-xl bg-indigo-600 hidden md:flex items-center justify-center">
               <FileText size={22} />
-            </div>
+            </div> */}
 
             <div>
               <p className="text-xs text-slate-400 uppercase tracking-wide">
@@ -82,9 +82,9 @@ export const SelectionSummary = ({
 
         <div className="bg-[#07162d] border border-slate-700 rounded-xl p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center">
+            {/* <div className="w-12 h-12 rounded-xl bg-indigo-600 hidden md:flex items-center justify-center">
               <BriefcaseBusiness size={22} />
-            </div>
+            </div> */}
 
             <div>
               <p className="text-xs text-slate-400 uppercase tracking-wide">

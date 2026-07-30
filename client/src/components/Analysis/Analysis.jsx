@@ -97,7 +97,6 @@ export const Analysis = () => {
     }
   };
 
-  
   useEffect(() => {
     fetchResumes();
     fetchJobs();
@@ -105,7 +104,7 @@ export const Analysis = () => {
     // fetchUser();
   }, []);
   // ---------------- Analyze ----------------
-  console.log(analyses);
+  // console.log(analyses);
 
   const analyzeResume = async () => {
     if (!selectedResume || !selectedJob) {
@@ -121,7 +120,7 @@ export const Analysis = () => {
         jobDescId: selectedJob._id,
       };
 
-      console.log(payload);
+      // console.log(payload);
 
       const { data } = await axios.post(
         api.defaults.baseURL + "analysis",
@@ -133,7 +132,7 @@ export const Analysis = () => {
 
       setAnalysisResult(data);
 
-      console.log(data);
+      // console.log(data);
     } catch (err) {
       console.log(err);
     } finally {
@@ -168,7 +167,8 @@ export const Analysis = () => {
         {/* Resume + Overview */}
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          <div className="xl:col-span-2">
+          {/* Resume Selector */}
+          <div className="order-2 xl:order-1 xl:col-span-2">
             <ResumeSelector
               resumes={resumes}
               loading={resumeLoading}
@@ -177,7 +177,10 @@ export const Analysis = () => {
             />
           </div>
 
-          <AnalysisOverview analyses={analyses} loading={analysisLoading} />
+          {/* Analysis Overview */}
+          <div className="order-1 xl:order-2">
+            <AnalysisOverview analyses={analyses} loading={analysisLoading} />
+          </div>
         </div>
 
         {/* Job Description */}
@@ -202,7 +205,7 @@ export const Analysis = () => {
 
         {/* Analyze */}
 
-        <div className="mt-6">
+        <div className="mt-6 mb-14 lg:mb-0">
           <AnalyzeButton
             analyzing={analyzing}
             disabled={!selectedResume || !selectedJob}

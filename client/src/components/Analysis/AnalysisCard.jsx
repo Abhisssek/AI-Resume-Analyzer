@@ -10,7 +10,7 @@ export const AnalysisCard = ({ analysis }) => {
   const navigate = useNavigate();
 
 
-  console.log(analysis);
+  // console.log(analysis);
   
 
 

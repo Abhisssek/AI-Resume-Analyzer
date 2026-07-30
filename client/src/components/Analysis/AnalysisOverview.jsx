@@ -9,7 +9,7 @@ export const AnalysisOverview = ({
   const navigate = useNavigate();
 
 
-  console.log(analyses, "ana");
+  // console.log(analyses, "ana");
   
 
   if (loading) {
