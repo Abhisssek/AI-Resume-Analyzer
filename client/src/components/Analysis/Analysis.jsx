@@ -8,6 +8,10 @@ import { AnalyzeButton } from "./AnalyzeButton";
 import { api } from "../../services/api";
 import axios from "axios";
 import { useAuth } from "../Home/Auth/AuthProvider";
+import { Loader } from "../Loader/Loader";
+import { Navigate } from "react-router";
+import toast from "react-hot-toast";
+
 
 export const Analysis = () => {
   const { user, userLoading, fetchUser } = useAuth();
@@ -90,6 +94,7 @@ export const Analysis = () => {
 
       // adjust if your backend returns data.analysis
       setAnalyses(data.analysis);
+      
     } catch (err) {
       console.log(err);
     } finally {
@@ -132,6 +137,9 @@ export const Analysis = () => {
 
       setAnalysisResult(data);
 
+      fetchAnalyses();
+      toast.success(data.message);
+
       // console.log(data);
     } catch (err) {
       console.log(err);
@@ -141,7 +149,7 @@ export const Analysis = () => {
   };
 
   if (userLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (!user && !userLoading) {

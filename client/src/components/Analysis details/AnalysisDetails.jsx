@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "../Sidebar/Sidebar";
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { api } from "../../services/api";
 import { ArrowLeft } from "lucide-react";
@@ -9,13 +9,22 @@ import { StrengthsSuggestions } from "./StrengthsSuggestions";
 import { KeywordsAnalysis } from "./KeywordAnalysis";
 import { InformationCards } from "./InformationCards";
 import { WeaknessesCard } from "./WeaknessesCard";
+import { useAuth } from "../Home/Auth/AuthProvider";
+import { Loader } from "../Loader/Loader";
+// import {Navigate} from 'react-router'
 
 export const AnalysisDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const { user, userLoading, fetchUser } = useAuth();
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const fetchAnalysis = async () => {
     try {
@@ -51,6 +60,10 @@ export const AnalysisDetail = () => {
       </div>
     );
   }
+
+
+   if (userLoading) return <Loader />;
+  if (!user && !userLoading) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen bg-[#07162d] text-white md:flex">

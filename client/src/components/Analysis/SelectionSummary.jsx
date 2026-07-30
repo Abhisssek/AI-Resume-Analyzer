@@ -115,7 +115,7 @@ export const SelectionSummary = ({
                 Experience :
                 <span className="text-white ml-2">
                   {selectedJob.experienceLevel ||
-                    selectedJob.parsedJobData?.experienceLevel ||
+                    selectedJob.parsedJobData?.experienceRequired ||
                     "Not Specified"}
                 </span>
               </p>

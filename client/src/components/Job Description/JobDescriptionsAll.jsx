@@ -1,6 +1,6 @@
 // JobDescriptionsAll.jsx
 
-import React from "react";
+import React, { use } from "react";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { Search } from "lucide-react";
 import { JobCard } from "./JobCard";
@@ -11,6 +11,8 @@ import toast from "react-hot-toast";
 import { useAuth } from "../Home/Auth/AuthProvider";
 import { useEffect } from "react";
 import { useState } from "react";
+import { Loader } from "../Loader/Loader";
+import { Navigate } from "react-router";
 
 export const JobDescriptionsAll = () => {
   const [jobs, setJobs] = useState([]);
@@ -24,6 +26,12 @@ export const JobDescriptionsAll = () => {
   const jobsPerPage = 8;
 
   const { user, userLoading, fetchUser } = useAuth();
+
+
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const fetchJobs = async () => {
     try {
@@ -85,7 +93,7 @@ export const JobDescriptionsAll = () => {
     setCurrentPage(1);
   }, [search, jobs]);
 
-  if (userLoading) return <div>Loading...</div>;
+  if (userLoading) return <Loader />;
   if (!user && !userLoading) return <Navigate to="/" replace />;
 
   return (

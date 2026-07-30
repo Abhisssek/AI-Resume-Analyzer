@@ -5,10 +5,21 @@ import axios from "axios";
 import { AnalysisCard } from "./AnalysisCard";
 import { Search } from "lucide-react";
 
+import { useAuth } from "../Home/Auth/AuthProvider";
+import { Loader } from "../Loader/Loader";
+import { Navigate } from "react-router";
+
 export const AnalysisAll = () => {
   const [analyses, setAnalyses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+
+  const { user, userLoading, fetchUser } = useAuth();
+
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const fetchAnalyses = async () => {
     try {
@@ -41,6 +52,10 @@ export const AnalysisAll = () => {
 
     return text.includes(search.toLowerCase());
   });
+
+
+   if (userLoading) return <Loader />;
+  if (!user && !userLoading) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen bg-[#07162d] text-white md:flex">

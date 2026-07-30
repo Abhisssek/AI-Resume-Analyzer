@@ -12,6 +12,7 @@ import {
 import { Sidebar } from "../Sidebar/Sidebar";
 import { useAuth } from "../Home/Auth/AuthProvider";
 import { api } from "../../services/api";
+import { NoData } from "../no data/NoData";
 
 import {
   ResponsiveContainer,
@@ -37,23 +38,45 @@ export const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      const resumeRes = await axios.get(api.defaults.baseURL + "resumes", {
-        withCredentials: true,
-      });
+    async function loadDataResume() {
+      try {
+        setLoading(true);
+        const resumeRes = await axios.get(api.defaults.baseURL + "resumes", {
+          withCredentials: true,
+        });
 
-      const analysisRes = await axios.get(api.defaults.baseURL + "analysis", {
-        withCredentials: true,
-      });
-
-
-      if(resumeRes.data.success && analysisRes.data.success) setLoading(false);
-      setResume(resumeRes.data.resumes);
-      setAnalysis(analysisRes.data.analysis);
+        if (resumeRes.data.success) {
+          setResume(resumeRes.data.resumes);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
 
-    loadData();
+    loadDataResume();
+  }, []);
+
+
+
+  useEffect(() => {
+    async function loadDataAnalysis() {
+      try {
+        setLoading(true);
+        const analysisRes = await axios.get(api.defaults.baseURL + "analysis", {
+          withCredentials: true,
+        });
+
+        if (analysisRes.data.success) {
+          setAnalysis(analysisRes.data.analysis);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    loadDataAnalysis();
   }, []);
 
   if (userLoading) return <Loader />;
@@ -97,7 +120,7 @@ export const Dashboard = () => {
     },
   ];
 
-  // console.log(analysis);
+  // console.log(resume);
 
   const chartData =
     analysis.map((item) => ({
@@ -150,158 +173,175 @@ export const Dashboard = () => {
 
         {/* Cards */}
 
-      {loading ? <Loader /> : (
-        
-      <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
-          {stats.map((card) => (
-            <div
-              key={card.title}
-              className="rounded-2xl bg-[#0d1b36] border border-slate-800 p-6 hover:border-indigo-500 transition"
-            >
-              <div
-                className={`w-12 h-12 rounded-xl flex items-center justify-center ${card.color}`}
-              >
-                {card.icon}
-              </div>
-
-              <h4 className="mt-6 text-slate-400">{card.title}</h4>
-
-              <h2 className="text-4xl font-bold mt-2">{card.value}</h2>
-            </div>
-          ))}
-        </div>
-
-        {/* PART 2 STARTS BELOW */}
-        {/* ================= Bottom Grid ================= */}
-
-        <div className="grid grid-cols-1 xl:grid-cols-[380px_1fr] gap-6 mt-8">
-          {/* Recent Analysis */}
-
-          <div className="bg-[#0d1b36] rounded-2xl border border-slate-800 p-6">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-xl font-semibold">Recent Analysis</h2>
-
-                <p className="text-slate-400 text-sm mt-1">
-                  Latest resume analyses
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {analysis.length === 0 && (
-                <div className="text-slate-500 text-center py-10">
-                  No analysis found.
-                </div>
-              )}
-
-              {analysis.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5).map((item) => (
+        {!loading && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
+              {stats.map((card) => (
                 <div
-                  key={item._id}
-                  className="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-0 sm:items-center p-4 rounded-xl bg-[#07162d] border border-slate-800 hover:border-indigo-500 transition"
+                  key={card.title}
+                  className="rounded-2xl bg-[#0d1b36] border border-slate-800 p-6 hover:border-indigo-500 transition"
                 >
-                  <div>
-                    <h3 className="font-semibold truncate w-[180px]">
-                      {item.resumeId?.fileName}
-                    </h3>
-
-                    <p className="text-slate-400 text-sm mt-1">
-                      {new Date(item.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-
                   <div
-                    className={` font-bold text-md
-            ${
-              item.atsScore >= 80
-                ? " text-green-400"
-                : item.atsScore >= 60
-                  ? " text-yellow-400"
-                  : " text-red-400"
-            }`}
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${card.color}`}
                   >
-                    {item.atsScore}%
+                    {card.icon}
                   </div>
+
+                  <h4 className="mt-6 text-slate-400">{card.title}</h4>
+
+                  <h2 className="text-4xl font-bold mt-2">{card.value}</h2>
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* Score Trend */}
+            {/* PART 2 STARTS BELOW */}
+            {/* ================= Bottom Grid ================= */}
 
-          <div className="bg-[#0d1b36] rounded-2xl border border-slate-800 p-6">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-xl font-semibold">Score Trend</h2>
+            <div className="grid grid-cols-1 xl:grid-cols-[380px_1fr] gap-6 mt-8">
+              {/* Recent Analysis */}
 
-                <p className="text-slate-400 text-sm mt-1">
-                  ATS score over time
-                </p>
+              <div className="bg-[#0d1b36] rounded-2xl border border-slate-800 p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-xl font-semibold">Recent Analysis</h2>
+
+                    <p className="text-slate-400 text-sm mt-1">
+                      Latest resume analyses
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {analysis.length === 0 ? (
+                    <NoData
+                      title="No Analysis Yet"
+                      description="Upload your resume and analyze it against a job description to see your ATS scores."
+                    />
+                  ) : (
+                    analysis
+                      .sort(
+                        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+                      )
+                      .slice(0, 5)
+                      .map((item) => (
+                        <div
+                          key={item._id}
+                          className="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-0 sm:items-center p-4 rounded-xl bg-[#07162d] border border-slate-800 hover:border-indigo-500 transition"
+                        >
+                          <div>
+                            <h3 className="font-semibold truncate w-[180px]">
+                              {item.resumeId?.fileName}
+                            </h3>
+
+                            <p className="text-slate-400 text-sm mt-1">
+                              {new Date(item.createdAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                },
+                              )}
+                            </p>
+                          </div>
+
+                          <div
+                            className={`font-bold text-md ${
+                              item.atsScore >= 80
+                                ? "text-green-400"
+                                : item.atsScore >= 60
+                                  ? "text-yellow-400"
+                                  : "text-red-400"
+                            }`}
+                          >
+                            {item.atsScore}%
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
               </div>
 
-              <select
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                className="rounded-lg border border-slate-700 bg-[#07162d] px-4 py-2 outline-none"
-              >
-                {months.map((month) => (
-                  <option key={month} value={month} className="bg-[#07162d]">
-                    {month}
-                  </option>
-                ))}
-              </select>
+              {/* Score Trend */}
+
+              <div className="bg-[#0d1b36] rounded-2xl border border-slate-800 p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-xl font-semibold">Score Trend</h2>
+
+                    <p className="text-slate-400 text-sm mt-1">
+                      ATS score over time
+                    </p>
+                  </div>
+
+                  <select
+                    value={selectedMonth}
+                    onChange={(e) => setSelectedMonth(e.target.value)}
+                    className="rounded-lg border border-slate-700 bg-[#07162d] px-4 py-2 outline-none"
+                  >
+                    {months.map((month) => (
+                      <option
+                        key={month}
+                        value={month}
+                        className="bg-[#07162d]"
+                      >
+                        {month}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {filteredData.length === 0 ? (
+                  <NoData
+                    title="No Score Data"
+                    description="Analyze at least one resume to view your ATS score trend."
+                  />
+                ) : (
+                  <div className="h-[330px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={filteredData}>
+                        <XAxis
+                          dataKey="date"
+                          stroke="#94A3B8"
+                          axisLine={false}
+                          tickLine={false}
+                        />
+
+                        <YAxis
+                          domain={[0, 100]}
+                          stroke="#94A3B8"
+                          axisLine={false}
+                          tickLine={false}
+                        />
+
+                        <Tooltip
+                          contentStyle={{
+                            background: "#07162d",
+                            border: "1px solid #334155",
+                            borderRadius: "14px",
+                            color: "#fff",
+                          }}
+                        />
+
+                        <Line
+                          dataKey="score"
+                          stroke="#6366F1"
+                          strokeWidth={4}
+                          dot={{
+                            r: 5,
+                            fill: "#6366F1",
+                          }}
+                          activeDot={{
+                            r: 8,
+                          }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+              </div>
             </div>
-
-            <div className="h-[330px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={filteredData}>
-                  <XAxis
-                    dataKey="date"
-                    stroke="#94A3B8"
-                    axisLine={false}
-                    tickLine={false}
-                  />
-
-                  <YAxis
-                    domain={[0, 100]}
-                    stroke="#94A3B8"
-                    axisLine={false}
-                    tickLine={false}
-                  />
-
-                  <Tooltip
-                    contentStyle={{
-                      background: "#07162d",
-                      border: "1px solid #334155",
-                      borderRadius: "14px",
-                      color: "#fff",
-                      // marginLeft: "10px",
-                    }}
-                  />
-
-                  <Line
-                    dataKey="score"
-                    stroke="#6366F1"
-                    strokeWidth={4}
-                    dot={{
-                      r: 5,
-                      fill: "#6366F1",
-                    }}
-                    activeDot={{
-                      r: 8,
-                    }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-        </>
+          </>
         )}
       </main>
     </div>
