@@ -19,6 +19,7 @@ import Features from "./components/Home/Hero/feature/Feature";
 import HowItWorks from "./components/Home/Hero/working/HowItWorks";
 import GetStarted from "./components/Home/Hero/get started/GetStarted";
 import Demo from "./components/Home/Hero/demo/Demo";
+import { NotFound } from "./components/not found/NotFound";
 
 export const App = () => {
   const routes = createBrowserRouter([
@@ -38,6 +39,7 @@ export const App = () => {
     {path: "/working", element:<HowItWorks/>},
     {path: "/get-started", element:<GetStarted/>},
     {path: "/demo", element:<Demo/>},
+    {path: "*", element:<NotFound/>},
   ]);
 
   return (

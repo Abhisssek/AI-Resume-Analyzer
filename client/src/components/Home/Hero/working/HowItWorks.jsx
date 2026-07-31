@@ -168,7 +168,7 @@ export default function HowItWorks() {
                   className="flex items-center gap-3 rounded-xl bg-slate-950 border border-slate-800 p-4"
                 >
                   <CheckCircle
-                    className="text-green-500"
+                    className="hidden lg:block text-green-500"
                     size={20}
                   />
 

@@ -157,7 +157,7 @@ export const JobDescriptionsAll = () => {
     items-stretch
   "
             >
-              {currentJobs.map((job) => (
+              {currentJobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((job) => (
                 <JobCard
                   key={job._id}
                   job={job}

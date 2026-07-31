@@ -4,6 +4,7 @@ import "dotenv/config";
 import  database  from "./db/db.js";
 import cookieParser from "cookie-parser";
 import isAuthenticated from "./middlewares/isAuthenticated.js";
+import path from "path";
 
 
 
@@ -39,6 +40,15 @@ app.use("/api/analysis", analysisRoutes);
 //     console.log(req.user);
 //     res.send("Hello from server");
 // })
+
+
+const frontendPath = path.join(__dirname, "../client/dist");
+
+app.use(express.static(frontendPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
 
 

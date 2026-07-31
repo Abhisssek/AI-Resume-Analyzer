@@ -135,7 +135,7 @@ export const Resume = () => {
                       </td>
                     </tr>
                   ) : (
-                    resumes.map((resume) => (
+                    resumes.sort((a, b)=> new Date(b.createdAt) - new Date(a.createdAt)).map((resume) => (
                       <tr
                         key={resume._id}
                         className="border-b border-slate-800 hover:bg-[#102243] transition"

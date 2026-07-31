@@ -246,7 +246,7 @@ export const JobDetailsModal = ({ job, onClose }) => {
                 href={job.sourceUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-[#09172f] rounded-xl p-5 flex gap-3 items-center hover:border-indigo-500 border border-transparent transition"
+                className="bg-[#09172f] overflow-hidden  rounded-xl p-5 flex gap-3 items-center hover:border-indigo-500 border border-transparent transition"
               >
                 <Globe className="text-indigo-400" />
 

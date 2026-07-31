@@ -1,0 +1,22 @@
+{
+  "name": "ai-resume-analyzer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+ "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abhisssek/AI-Resume-Analyzer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abhisssek/AI-Resume-Analyzer/issues"
+  },
+  "homepage": "https://github.com/Abhisssek/AI-Resume-Analyzer#readme"
+}
