@@ -6,7 +6,7 @@ export const AuthLeft = ({title, description, image}) => {
 
 
   return (
-    <div className='px-15 py-10 bg-[#071632] xl:w-2/5 h-screen flex flex-col  '>
+    <div className='px-15 py-10 bg-[#071632] xl:w-2/5 min-h-screen flex flex-col  '>
         <div className='flex  items-center gap-3'>
              <Brain className='' size={42} color='#6366f1' />
              <h2 className='text-2xl font-bold'>AI Resume Analyzer</h2>

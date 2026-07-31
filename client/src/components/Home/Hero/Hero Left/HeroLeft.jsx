@@ -1,8 +1,11 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
+import { useNavigate } from "react-router";
 
 export const HeroLeft = () => {
+  const navigate = useNavigate();
   return (
+    <>
     <div className=" w-full lg:px-17 lg:py-10 px-8 py-2 text-center sm:text-left xl:w-[55%] mt-4 ">
       <div className="flex gap-2 items-center bg-[#0e2343] mx-auto sm:mx-0 w-fit py-2 px-5 rounded-full">
         <Sparkles className="text-primary mb-1" />
@@ -18,14 +21,15 @@ export const HeroLeft = () => {
           </p>
         </div>
         <div className=" flex flex-col sm:flex-row gap-5">
-          <button className="bg-primary text-white px-4 py-2 text-md  sm:text-lg font-bold sm:px-6 sm:py-2 md:px-7 md:py-3 rounded-sm hover:bg-primary/80">
+          <button onClick={()=>navigate("/get-started")} className="bg-primary text-white px-4 py-2 text-md  sm:text-lg font-bold sm:px-6 sm:py-2 md:px-7 md:py-3 rounded-sm hover:bg-primary/80">
             Get Started Free
           </button>
-          <button className="bg-secondary border text-lg font-bold border-primary/40 hover:bg-secondary/80   text-[#acb6cf] px-7 py-3 rounded-sm">
+          <button onClick={()=>navigate("/demo")} className="bg-secondary border text-lg font-bold border-primary/40 hover:bg-secondary/80   text-[#acb6cf] px-7 py-3 rounded-sm">
             View Demo
           </button>
         </div>
       </div>
     </div>
+    </>
   );
 };

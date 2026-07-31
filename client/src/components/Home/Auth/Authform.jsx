@@ -2,8 +2,10 @@ import React from "react";
 // import { Signup } from "./Signup/Signup";
 import { useState } from "react";
 import { Link } from "react-router";
+import { ButtonLoader } from "../../button/ButtonLoader";
 
-export const Authform = ({type, onSubmit}) => {
+export const Authform = ({ type, onSubmit, loading }) => {
+  // const [loading, setLoading] = useState(false);
   const isSignup = type == "signup";
   const [data, setData] = useState({
     name: "",
@@ -17,14 +19,16 @@ export const Authform = ({type, onSubmit}) => {
     const payload = isSignup
       ? { name: data.name, email: data.email, password: data.password }
       : { email: data.email, password: data.password };
-      onSubmit(payload)
+    onSubmit(payload);
   };
 
   return (
     <div className=" xl:px-10 xl:w-full py-7 mb-10 mt-10 ">
-      <div className="bg-[#04101f] border border-secondary xl:px-20 xl:py-10 p-7 w-[80%] mx-auto xl:mt-10 rounded-lg flex flex-col gap-10">
+      <div className="bg-[#04101f] border border-secondary xl:px-20 xl:py-10 p-7 w-[95%] sm:w-[80%] mx-auto xl:mt-10 rounded-lg flex flex-col gap-10">
         <div>
-          <h2 className="text-xl lg:text-3xl font-bold mb-3">Sign In</h2>
+          <h2 className="text-xl lg:text-3xl font-bold mb-3">
+            {isSignup ? "Create Account" : "Sign In"}
+          </h2>
           <p className="text-sm text-s-primary sm:text-lg">
             Enter your credentials to access your account
           </p>
@@ -71,19 +75,25 @@ export const Authform = ({type, onSubmit}) => {
             placeholder="Enter your password"
           />
           {isSignup ? (
-            <button
+            <ButtonLoader
+              loading={loading}
               type="submit"
+              text="Sign Up"
+              loadingText="Signing Up..."
               className="bg-primary mt-6 text-white px-4 py-2 rounded-sm hover:bg-primary/80"
             >
-              Sign In
-            </button>
+              
+            </ButtonLoader>
           ) : (
-            <button
+            <ButtonLoader
+              loading={loading}
               type="submit"
+              text="Sign In"
+              loadingText="Logging In..."
               className="bg-primary mt-6 text-white px-4 py-2 rounded-sm hover:bg-primary/80"
             >
-              Sign In
-            </button>
+              
+            </ButtonLoader>
           )}
         </form>
         <p>
@@ -101,6 +111,17 @@ export const Authform = ({type, onSubmit}) => {
             </Link>
           )}
         </p>
+
+        <div className="mt-4 text-center">
+          <Link
+            to="/"
+            className="text-slate-400 hover:text-primary transition-colors duration-200"
+          >
+            ← Back to Home
+          </Link>
+        </div>
+
+        {/* <p className="mt-0">Back To HOME</p> */}
       </div>
     </div>
   );

@@ -15,6 +15,10 @@ import { JobDescriptionsAll } from "./components/Job Description/JobDescriptions
 import { AnalysisAll } from "./components/Analysis/AnalysisAll";
 import { AnalysisCard } from "./components/Analysis/AnalysisCard";
 import { AnalysisDetail } from "./components/Analysis details/AnalysisDetails";
+import Features from "./components/Home/Hero/feature/Feature";
+import HowItWorks from "./components/Home/Hero/working/HowItWorks";
+import GetStarted from "./components/Home/Hero/get started/GetStarted";
+import Demo from "./components/Home/Hero/demo/Demo";
 
 export const App = () => {
   const routes = createBrowserRouter([
@@ -30,6 +34,10 @@ export const App = () => {
     // {path: "/history", element:<History/>},
     {path: "/analysis/all", element:<AnalysisAll/>},
     {path: "/analysis/:id", element:<AnalysisDetail/>},
+    {path: "/features", element:<Features/>},
+    {path: "/working", element:<HowItWorks/>},
+    {path: "/get-started", element:<GetStarted/>},
+    {path: "/demo", element:<Demo/>},
   ]);
 
   return (

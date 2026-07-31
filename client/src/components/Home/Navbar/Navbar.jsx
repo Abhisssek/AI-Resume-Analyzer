@@ -3,10 +3,13 @@ import { Brain } from 'lucide-react'
 import { Menu } from 'lucide-react'
 import { X } from 'lucide-react'
 import { Link } from 'react-router'
+import { useNavigate } from 'react-router'
 
 export const Navbar = () => {
 
   const [open, setOpen] = useState(false)
+
+  const navigate = useNavigate()
 
   const links = [
     {
@@ -24,8 +27,8 @@ export const Navbar = () => {
   ]
   return (
     <nav className='flex justify-between items-center px-10 py-5'>
-        <div className='flex items-center  gap-6'>
-            <Brain className='' size={42} color='#6366f1' />
+        <div onClick={() => navigate("/")} className='flex cursor-pointer items-center  gap-6'>
+            <Brain  className='' size={42} color='#6366f1' />
             <h3 className=' text-base ml-[-9px] w-30 sm:w-fit whitespace-normal md:text-xl lg:text-xl font-semibold'>AI Resume Analyzer</h3>
         </div>
         
