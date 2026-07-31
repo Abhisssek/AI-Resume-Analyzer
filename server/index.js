@@ -5,19 +5,24 @@ import  database  from "./db/db.js";
 import cookieParser from "cookie-parser";
 import isAuthenticated from "./middlewares/isAuthenticated.js";
 import path from "path";
+import { fileURLToPath } from "url";
 
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
 
 // dotenv.config();
-app.use(cors(
-    {
-        origin: "http://localhost:5173",
-        credentials: true,
-    }
-));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? true
+        : "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json())
 app.use(cookieParser());
 
