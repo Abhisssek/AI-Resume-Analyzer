@@ -55,6 +55,9 @@ app.use((req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
+// this is for uptimerobot to not put the server to sleep
+app.use("/check", (req, res) => res.sendStatus(200));
+
 
 app.listen(process.env.PORT || 3001, () => {
     console.log(`Server running on port ${process.env.PORT || 3001}`);
